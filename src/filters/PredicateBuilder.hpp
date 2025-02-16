@@ -6,6 +6,7 @@
 #include "predicates/DescriptionPredicate.hpp"
 #include "predicates/TargetPredicate.hpp"
 #include "predicates/TimestampDurationPredicate.hpp"
+#include "predicates/CompositePredicate.hpp"
 #include <memory>
 #include <vector>
 
@@ -67,15 +68,33 @@ private:
             std::make_unique<T>(std::forward<Args>(args)...)
         );
     }
+
+    
     
     void applyLastOperation() {
         auto op = m_operations.back();
         m_operations.pop_back();
         
         switch(op) {
-            case LogicalOp::AND: break;
-            case LogicalOp::OR: break;
-            case LogicalOp::NOT: break;
+            case LogicalOp::AND: {
+                auto left = std::move(m_operands.back());
+                m_operands.pop_back();
+                auto right = std::move(m_operands.back());
+                m_operands.pop_back();
+                m_operands.push_back(std::make_unique<AndPredicate>(std::move(left), std::move(right)));
+            }
+            case LogicalOp::OR: {
+                auto left = std::move(m_operands.back());
+                m_operands.pop_back();
+                auto right = std::move(m_operands.back());
+                m_operands.pop_back();
+                m_operands.push_back(std::make_unique<OrPredicate>(std::move(left), std::move(right)));
+            }
+            case LogicalOp::NOT: {
+                auto operand = std::move(m_operands.back());
+                m_operands.pop_back();
+                m_operands.push_back(std::make_unique<NotPredicate>(std::move(operand)));
+            }
         }
     }
 };
