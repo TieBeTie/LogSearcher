@@ -1,4 +1,6 @@
+#pragma once
 #include "FilterKey.hpp"
+#include <string>
 
 class Description : public FilterKey {
 public:

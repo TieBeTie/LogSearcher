@@ -1,4 +1,5 @@
-#include "../Log/Log.hpp"
+#pragma once
+#include "../../core/Log.hpp"
 #include <string>
 
 class Predicate {   
