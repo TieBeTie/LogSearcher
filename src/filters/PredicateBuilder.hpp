@@ -10,7 +10,6 @@
 #include <memory>
 #include <vector>
 
-
 //example usage:
 // PredicateBuilder builder;
 // builder.withSource("source1").withTimeRange(Timestamp::now() - 1000, Timestamp::now()).and().withLogLevel(LogLevel::INFO);
